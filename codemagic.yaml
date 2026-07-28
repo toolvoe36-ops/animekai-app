@@ -4,7 +4,7 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m2
     environment:
-      flutter: 3.29.0
+      flutter: stable
       xcode: latest
       cocoapods: default
     scripts:
@@ -13,12 +13,11 @@ workflows:
           flutter pub get
       - name: Build iOS Release IPA
         script: |
-          flutter build ipa --release --no-codesign
+          flutter build ios --release --no-codesign
           mkdir -p build/ios/ipa
-          cd build/ios/archive/Runner.xcarchive/Products/Applications
-          mkdir Payload
+          cd build/ios/iphoneos
+          mkdir -p Payload
           cp -r Runner.app Payload/
-          zip -r ../../../../../ipa/AnimeKai_Movies.ipa Payload
+          zip -r ../../../ipa/AnimeKai_Movies.ipa Payload
     artifacts:
       - build/ios/ipa/*.ipa
-      - build/ios/archive/Runner.xcarchive/Products/Applications/*.zip
